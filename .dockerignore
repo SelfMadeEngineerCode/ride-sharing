@@ -1,0 +1,17 @@
+# Exclude directories
+.git/
+node_modules/
+dist/
+*.log
+web/.next/
+web/node_modules/
+
+# Exclude editor and OS files
+.idea/
+.vscode/
+.DS_Store
+
+# Include shared code
+!shared/
+
+proto/
