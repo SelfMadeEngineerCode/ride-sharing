@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { WEBSOCKET_URL } from "../constants";
 import { Trip, Driver, CarPackageSlug } from '../types';
-import { ServerWsMessage, TripEvents, isValidWsMessage, isValidTripEvent, ClientWsMessage } from '../contracts';
+import { ServerWsMessage, TripEvents, isValidWsMessage, isValidTripEvent, ClientWsMessage, BackendEndpoints } from '../contracts';
 
 interface useDriverConnectionProps {
   location: {
@@ -28,7 +28,7 @@ export const useDriverStreamConnection = ({
   useEffect(() => {
     if (!userID) return;
 
-    const websocket = new WebSocket(`${WEBSOCKET_URL}/drivers?userID=${userID}&packageSlug=${packageSlug}`);
+    const websocket = new WebSocket(`${WEBSOCKET_URL}${BackendEndpoints.WS_DRIVERS}?userID=${userID}&packageSlug=${packageSlug}`);
     setWs(websocket);
 
     websocket.onopen = () => {

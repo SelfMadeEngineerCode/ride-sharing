@@ -30,6 +30,17 @@ export const StripePaymentButton = ({
     }
   }
 
+  if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+    return (
+      <Button
+        disabled
+        className="w-full bg-red-500 text-white"
+      >
+        Stripe API KEY is not set on the NEXTJS app
+      </Button>
+    )
+  }
+
   return (
     <Button
       onClick={handlePayment}
