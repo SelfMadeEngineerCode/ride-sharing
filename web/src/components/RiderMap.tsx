@@ -12,7 +12,7 @@ import { RouteFare, RequestRideProps, TripPreview, HTTPTripStartResponse } from 
 import { RoutingControl } from "./RoutingControl";
 import { API_URL } from '../constants';
 import { RiderTripOverview } from './RiderTripOverview';
-import { HTTPTripPreviewRequestPayload, HTTPTripPreviewResponse, HTTPTripStartRequestPayload } from '../contracts';
+import { BackendEndpoints, HTTPTripPreviewRequestPayload, HTTPTripPreviewResponse, HTTPTripStartRequestPayload } from '../contracts';
 
 const userMarker = new L.Icon({
     iconUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Map_pin_icon.svg/176px-Map_pin_icon.svg.png",
@@ -95,7 +95,7 @@ export default function RiderMap({ onRouteSelected }: RiderMapProps) {
             },
         } as HTTPTripPreviewRequestPayload
 
-        const response = await fetch(`${API_URL}/trip/preview`, {
+        const response = await fetch(`${API_URL}${BackendEndpoints.PREVIEW_TRIP}`, {
             method: 'POST',
             body: JSON.stringify(payload),
         })
@@ -114,7 +114,7 @@ export default function RiderMap({ onRouteSelected }: RiderMapProps) {
             return
         }
 
-        const response = await fetch(`${API_URL}/trip/start`, {
+        const response = await fetch(`${API_URL}${BackendEndpoints.START_TRIP}`, {
             method: 'POST',
             body: JSON.stringify(payload),
         })
