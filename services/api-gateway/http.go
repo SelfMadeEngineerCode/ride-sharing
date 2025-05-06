@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"ride-sharing/services/api-gateway/grpc_clients"
 	"ride-sharing/shared/contracts"
 )
 
@@ -25,6 +26,18 @@ func handleTripPreview(w http.ResponseWriter, r *http.Request) {
 
 	jsonBody, _ := json.Marshal(reqBody)
 	reader := bytes.NewReader(jsonBody)
+
+
+	// Why we need to create a new client for each connection:
+	// because if a service is down, we don't want to block the whole application
+	// so we create a new client for each connection
+	tripService, err := grpc_clients.NewTripServiceClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Don't forget to close the client to avoid resource leaks!
+	defer tripService.Close()
 
 	// TODO: Call trip service
 	resp, err := http.Post("http://trip-service:8083/preview", "application/json", reader)
