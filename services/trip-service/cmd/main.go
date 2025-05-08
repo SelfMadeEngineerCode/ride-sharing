@@ -6,6 +6,9 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"ride-sharing/services/trip-service/internal/infrastructure/grpc"
+	"ride-sharing/services/trip-service/internal/infrastructure/repository"
+	"ride-sharing/services/trip-service/internal/service"
 	"syscall"
 
 	grpcserver "google.golang.org/grpc"
@@ -14,8 +17,8 @@ import (
 var GrpcAddr = ":9093"
 
 func main() {
-	// 	inmemRepo := repository.NewInmemRepository()
-	// svc := service.NewService(inmemRepo)
+	inmemRepo := repository.NewInmemRepository()
+	svc := service.NewService(inmemRepo)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -32,9 +35,9 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
+	// Starting the gRPC server
 	grpcServer := grpcserver.NewServer()
-
-	// TODO initialize our grpc handler implementation
+	grpc.NewGRPCHandler(grpcServer, svc)
 
 	log.Printf("Starting gRPC server Trip service on port %s", lis.Addr().String())
 

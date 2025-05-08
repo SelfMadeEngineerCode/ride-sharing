@@ -17,7 +17,7 @@ message PreviewTripRequest {
 message PreviewTripResponse {
   string tripID = 1;
   Route route = 2;
-  repeated RideShare rideFares = 3;
+  repeated RideFare rideFares = 3;
 }
 
 message Coordinate {
@@ -35,7 +35,7 @@ message Route {
   double duration = 3;
 }
 
-message RideShare {
+message RideFare {
   string id = 1;
   string userID = 2;
   string packageSlug = 3;
