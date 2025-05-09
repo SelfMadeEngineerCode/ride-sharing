@@ -27,6 +27,10 @@ func NewGRPCHandler(server *grpc.Server, service domain.TripService) *gRPCHandle
 	return handler
 }
 
+func (h *gRPCHandler) CreateTrip(ctx context.Context, req *pb.CreateTripRequest) (*pb.CreateTripResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateTrip not implemented")
+}
+
 func (h *gRPCHandler) PreviewTrip(ctx context.Context, req *pb.PreviewTripRequest) (*pb.PreviewTripResponse, error) {
 	pickup := req.GetStartLocation()
 	destination := req.GetEndLocation()

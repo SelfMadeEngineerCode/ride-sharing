@@ -6,6 +6,7 @@ option go_package = "shared/proto/trip;trip";
 
 service TripService {
   rpc PreviewTrip(PreviewTripRequest) returns (PreviewTripResponse);
+  rpc CreateTrip(CreateTripRequest) returns (CreateTripResponse);
 }
 
 message PreviewTripRequest {
@@ -42,7 +43,6 @@ message RideFare {
   double totalPriceInCents = 4;
 }
 
-// Part of the exercise starter code
 message CreateTripRequest {
   string rideFareID = 1;
   string userID = 2;
@@ -51,4 +51,3 @@ message CreateTripRequest {
 message CreateTripResponse {
   string tripID = 1;
 }
-//
