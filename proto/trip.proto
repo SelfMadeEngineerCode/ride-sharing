@@ -50,4 +50,22 @@ message CreateTripRequest {
 
 message CreateTripResponse {
   string tripID = 1;
+  Trip trip = 2;
+}
+
+message Trip {
+  string id = 1;
+  RideFare selectedFare = 2;
+  Route route = 3;
+  string status = 4;
+  string userID = 5;
+  TripDriver driver = 6;
+}
+
+// Static driver object that is used to store the driver information
+message TripDriver {
+  string id = 1;
+  string name = 2;
+  string profilePicture = 3;
+  string carPlate = 4;
 }
