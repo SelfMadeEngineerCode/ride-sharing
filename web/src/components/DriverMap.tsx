@@ -42,8 +42,8 @@ export const DriverMap = ({ packageSlug }: { packageSlug: CarPackageSlug }) => {
   const [riderLocation, setRiderLocation] = useState<Coordinate>(START_LOCATION)
 
   const driverGeohash = useMemo(() =>
-    Geohash.encode(riderLocation.latitude, riderLocation.longitude, 7)
-    , [riderLocation.latitude, riderLocation.longitude]);
+    Geohash.encode(riderLocation?.latitude, riderLocation?.longitude, 7)
+    , [riderLocation?.latitude, riderLocation?.longitude]);
 
   const {
     error,
@@ -106,17 +106,17 @@ export const DriverMap = ({ packageSlug }: { packageSlug: CarPackageSlug }) => {
   }
 
   const parsedRoute = useMemo(() =>
-    requestedTrip?.route.geometry[0].coordinates
-      .map((coord) => [coord.longitude, coord.latitude] as [number, number])
+    requestedTrip?.route?.geometry[0]?.coordinates
+      .map((coord) => [coord?.longitude, coord?.latitude] as [number, number])
     , [requestedTrip])
 
   // destination is the last coordinate in the route
   const destination = useMemo(() =>
-    requestedTrip?.route.geometry[0].coordinates[requestedTrip?.route.geometry[0].coordinates.length - 1]
+    requestedTrip?.route?.geometry[0]?.coordinates[requestedTrip?.route?.geometry[0]?.coordinates?.length - 1]
     , [requestedTrip])
   // start location is the first coordinate in the route
   const startLocation = useMemo(() =>
-    requestedTrip?.route.geometry[0].coordinates[0]
+    requestedTrip?.route?.geometry[0]?.coordinates[0]
     , [requestedTrip])
 
 
