@@ -140,7 +140,7 @@ You can either run a `gcloud` command to start a GKE cluster or manually create 
 Connect to your remote cluster and apply the kubernetes manifests.
 
 ```bash
-gcloud container clusters get-credentials ride-sharing-cluster --region {REGION}--project {PROJECT_ID}
+gcloud container clusters get-credentials ride-sharing --region {REGION}--project {PROJECT_ID}
 ```
 
 Next, upload each manifest by hand to make sure the correct order is maintained.
@@ -193,3 +193,44 @@ kubectl config use-context docker-desktop
 # OR for Minikube
 kubectl config use-context minikube
 ```
+
+## Adding HTTPS to your API
+0. Reserve a static IP in GCP:
+Go to the Google Cloud Console → VPC Network → External IP addresses.
+Click "RESERVE STATIC ADDRESS".
+Name it api-gateway-ip (to match your annotation).
+Choose the same region as your GKE cluster (or "global" if using a global Ingress).
+
+Confirm your IP exists:
+```bash
+gcloud compute addresses list
+```
+
+1. Add the ingress deployment
+2. Change from LoadBalancer to ClusterIP
+3. Apply the config
+```bash
+kubectl apply -f infra/production/k8s/api-gateway-ingress.yaml
+kubectl apply -f infra/production/k8s/api-gateway-deployment.yaml
+```
+4. Get the IP address: 
+```bash
+kubectl get ingress api-gateway-ingress
+```
+
+You should also wait for SSL certificate to be provisioned. Check the status:
+
+```bash
+kubectl describe managedcertificate api-gateway-cert
+```
+
+Once the certificate is provisioned (you'll see a "Provisioning" status change to "Active")
+
+5. The Ingress will automatically provision a Google-managed SSL certificate for the IP address. You can access your API using:
+```bash
+https://<IP_ADDRESS>
+```
+
+Note: Since this is using a self-signed certificate, browsers will show a security warning. This is normal and expected. You can:
+Accept the warning in your browser (not recommended for production)
+Use a proper domain name (recommended for production)
