@@ -175,7 +175,7 @@ export default function RiderMap({ onRouteSelected }: RiderMapProps) {
                     {drivers.map((driver) => (
                         <Marker
                             key={driver.id}
-                            position={[driver.location.latitude, driver.location.longitude]}
+                            position={[driver?.location?.latitude, driver?.location?.longitude]}
                             icon={driverMarker}
                         >
                             <Popup>
