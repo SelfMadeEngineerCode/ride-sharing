@@ -46,7 +46,6 @@ var PredefinedRoutes = [][][]float64{
 	},
 }
 
-
 func GenerateRandomPlate() string {
 	letters := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	plate := ""
