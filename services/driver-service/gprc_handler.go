@@ -24,9 +24,13 @@ func NewGrpcHandler(s *grpc.Server, service *Service) {
 }
 
 func (h *driverGrpcHandler) RegisterDriver(ctx context.Context, req *pb.RegisterDriverRequest) (*pb.RegisterDriverResponse, error) {
+	// TODO: Call the service method
+
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterDriver not implemented")
 }
 
 func (h *driverGrpcHandler) UnregisterDriver(ctx context.Context, req *pb.RegisterDriverRequest) (*pb.RegisterDriverResponse, error) {
+	// TODO: Call the service method
+
 	return nil, status.Errorf(codes.Unimplemented, "method UnregisterDriver not implemented")
 }
