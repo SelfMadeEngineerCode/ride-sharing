@@ -24,6 +24,12 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "200m"
+          env:
+            - name: RABBITMQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-credentials
+                  key: uri
 ---
 apiVersion: v1
 kind: Service
