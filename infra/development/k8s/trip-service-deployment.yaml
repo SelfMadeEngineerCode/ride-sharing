@@ -30,6 +30,11 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-credentials
                   key: uri
+            - name: OSRM_API
+              valueFrom:
+                secretKeyRef:
+                  name: external-apis
+                  key: osrm
 ---
 apiVersion: v1
 kind: Service
