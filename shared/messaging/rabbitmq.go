@@ -45,7 +45,7 @@ func (r *RabbitMQ) ConsumeMessages(queueName string, handler MessageHandler) err
 	msgs, err := r.Channel.Consume(
 		queueName, // queue
 		"",        // consumer
-		true,      // auto-ack
+		false,     // auto-ack
 		false,     // exclusive
 		false,     // no-local
 		false,     // no-wait
@@ -62,7 +62,20 @@ func (r *RabbitMQ) ConsumeMessages(queueName string, handler MessageHandler) err
 			log.Printf("Received a message: %s", msg.Body)
 
 			if err := handler(ctx, msg); err != nil {
-				log.Fatalf("failed to handle the message: %v", err)
+				log.Printf("ERROR: Failed to handle message: %v. Message body: %s", err, msg.Body)
+				// Nack the message. Set requeue to false to avoid immediate redelivery loops.
+				// Consider a dead-letter exchange (DLQ) or a more sophisticated retry mechanism for production.
+				if nackErr := msg.Nack(false, false); nackErr != nil {
+					log.Printf("ERROR: Failed to Nack message: %v", nackErr)
+				}
+				
+				// Continue to the next message
+				continue
+			}
+
+			// Only Ack if the handler succeeds
+			if ackErr := msg.Ack(false); ackErr != nil {
+				log.Printf("ERROR: Failed to Ack message: %v. Message body: %s", ackErr, msg.Body)
 			}
 		}
 	}()
