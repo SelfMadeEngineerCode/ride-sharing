@@ -36,6 +36,7 @@ export default function RiderMap({ onRouteSelected }: RiderMapProps) {
     const [destination, setDestination] = useState<[number, number] | null>(null)
     const mapRef = useRef<L.Map>(null)
     const userID = useMemo(() => crypto.randomUUID(), [])
+    const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const location = {
         latitude: 37.7749,
@@ -58,27 +59,33 @@ export default function RiderMap({ onRouteSelected }: RiderMapProps) {
             return
         }
 
-        setDestination([e.latlng.lat, e.latlng.lng])
+        if (debounceTimeoutRef.current) {
+            clearTimeout(debounceTimeoutRef.current);
+        }
 
-        const data = await requestRidePreview({
-            pickup: [location.latitude, location.longitude],
-            destination: [e.latlng.lat, e.latlng.lng],
-        })
-        console.log(data)
+        debounceTimeoutRef.current = setTimeout(async () => {
+            setDestination([e.latlng.lat, e.latlng.lng])
 
-        const parsedRoute = data.route.geometry[0].coordinates
-            .map((coord) => [coord.longitude, coord.latitude] as [number, number])
+            const data = await requestRidePreview({
+                pickup: [location.latitude, location.longitude],
+                destination: [e.latlng.lat, e.latlng.lng],
+            })
+            console.log(data)
 
-        setTrip({
-            tripID: "",
-            route: parsedRoute,
-            rideFares: data.rideFares,
-            distance: data.route.distance,
-            duration: data.route.duration,
-        })
+            const parsedRoute = data.route.geometry[0].coordinates
+                .map((coord) => [coord.longitude, coord.latitude] as [number, number])
 
-        // Call onRouteSelected with the route distance
-        onRouteSelected?.(data.route.distance)
+            setTrip({
+                tripID: "",
+                route: parsedRoute,
+                rideFares: data.rideFares,
+                distance: data.route.distance,
+                duration: data.route.duration,
+            })
+
+            // Call onRouteSelected with the route distance
+            onRouteSelected?.(data.route.distance)
+        }, 500);
     }
 
     const requestRidePreview = async (props: RequestRideProps): Promise<HTTPTripPreviewResponse> => {
