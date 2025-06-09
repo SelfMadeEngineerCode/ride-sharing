@@ -105,6 +105,8 @@ export const DriverMap = ({ packageSlug }: { packageSlug: CarPackageSlug }) => {
     resetTripStatus()
   }
 
+  console.log({ requestedTrip })
+
   const parsedRoute = useMemo(() =>
     requestedTrip?.route?.geometry[0]?.coordinates
       .map((coord) => [coord?.longitude, coord?.latitude] as [number, number])

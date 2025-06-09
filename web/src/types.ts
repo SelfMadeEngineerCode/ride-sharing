@@ -1,4 +1,5 @@
 export interface Trip {
+    trip: Trip;
     id: string;
     userID: string;
     status: string;
