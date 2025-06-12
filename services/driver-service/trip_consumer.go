@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"math/rand"
 	"ride-sharing/shared/contracts"
 	"ride-sharing/shared/messaging"
 
@@ -66,7 +67,10 @@ func (c *tripConsumer) handleFindAndNotifyDrivers(ctx context.Context, payload m
 		return nil
 	}
 
-	suitableDriverID := suitableIDs[0]
+	// Get a random index from the matching drivers
+	randomIndex := rand.Intn(len(suitableIDs))
+
+	suitableDriverID := suitableIDs[randomIndex]
 
 	marshalledEvent, err := json.Marshal(payload)
 	if err != nil {
@@ -76,7 +80,7 @@ func (c *tripConsumer) handleFindAndNotifyDrivers(ctx context.Context, payload m
 	// Notify the driver about a potential trip
 	if err := c.rabbitmq.PublishMessage(ctx, contracts.DriverCmdTripRequest, contracts.AmqpMessage{
 		OwnerID: suitableDriverID,
-		Data: marshalledEvent,
+		Data:    marshalledEvent,
 	}); err != nil {
 		log.Printf("Failed to publish message to exchange: %v", err)
 		return err
