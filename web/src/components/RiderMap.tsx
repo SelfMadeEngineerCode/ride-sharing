@@ -164,39 +164,39 @@ export default function RiderMap({ onRouteSelected }: RiderMapProps) {
                     <Marker position={[location.latitude, location.longitude]} icon={userMarker} />
 
                     {/* Render geohash grid cells */}
-                    {drivers.map((driver) => (
+                    {drivers?.map((driver) => (
                         <Rectangle
-                            key={`grid-${driver.geohash}`}
-                            bounds={getGeohashBounds(driver.geohash) as L.LatLngBoundsExpression}
+                            key={`grid-${driver?.geohash}`}
+                            bounds={getGeohashBounds(driver?.geohash) as L.LatLngBoundsExpression}
                             pathOptions={{
                                 color: '#3388ff',
                                 weight: 1,
                                 fillOpacity: 0.1
                             }}
                         >
-                            <Popup>Geohash: {driver.geohash}</Popup>
+                            <Popup>Geohash: {driver?.geohash}</Popup>
                         </Rectangle>
                     ))}
 
                     {/* Render driver markers */}
-                    {drivers.map((driver) => (
+                    {drivers?.map((driver) => (
                         <Marker
-                            key={driver.id}
+                            key={driver?.id}
                             position={[driver?.location?.latitude, driver?.location?.longitude]}
                             icon={driverMarker}
                         >
                             <Popup>
-                                Driver ID: {driver.id}
+                                Driver ID: {driver?.id}
                                 <br />
-                                Geohash: {driver.geohash}
+                                Geohash: {driver?.geohash}
                                 <br />
-                                Name: {driver.name}
+                                Name: {driver?.name}
                                 <br />
-                                Car Plate: {driver.carPlate}
+                                Car Plate: {driver?.carPlate}
                                 <br />
                                 <Image
-                                    src={driver.profilePicture}
-                                    alt={`${driver.name}'s profile picture`}
+                                    src={driver?.profilePicture}
+                                    alt={`${driver?.name}'s profile picture`}
                                     width={100}
                                     height={100}
                                 />
