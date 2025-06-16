@@ -36,6 +36,11 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-credentials
                   key: uri
+            - name: STRIPE_WEBHOOK_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secrets
+                  key: stripe-webhook-key
 ---
 apiVersion: v1
 kind: Service

@@ -13,6 +13,7 @@ const (
 	NotifyDriverAssignQueue          = "notify_driver_assign"
 	PaymentTripResponseQueue         = "payment_trip_response"
 	NotifyPaymentSessionCreatedQueue = "notify_payment_session_created"
+	NotifyPaymentSuccessQueue        = "payment_success"
 )
 
 type TripEventData struct {
@@ -38,4 +39,10 @@ type PaymentTripResponseData struct {
 	DriverID string  `json:"driverID"`
 	Amount   float64 `json:"amount"`
 	Currency string  `json:"currency"`
+}
+
+type PaymentStatusUpdateData struct {
+	TripID   string `json:"tripID"`
+	UserID   string `json:"userID"`
+	DriverID string `json:"driverID"`
 }
