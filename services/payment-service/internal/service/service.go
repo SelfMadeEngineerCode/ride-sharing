@@ -16,8 +16,10 @@ type paymentService struct {
 }
 
 // NewPaymentService creates a new instance of the payment service
-func NewPaymentService() domain.Service {
-	return &paymentService{}
+func NewPaymentService(paymentProcessor domain.PaymentProcessor) domain.Service {
+	return &paymentService{
+		paymentProcessor: paymentProcessor,
+	}
 }
 
 // CreatePaymentSession creates a new payment session for a trip
