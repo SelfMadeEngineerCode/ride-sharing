@@ -10,6 +10,7 @@ import (
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
+	"go.opentelemetry.io/otel/trace"
 )
 
 type Config struct {
@@ -37,6 +38,10 @@ func InitTracer(cfg Config) (func(context.Context) error, error) {
 	otel.SetTextMapPropagator(prop)
 
 	return traceProvider.Shutdown, nil
+}
+
+func GetTracer(name string) trace.Tracer {
+	return otel.GetTracerProvider().Tracer(name)
 }
 
 func newExporter(endpoint string) (sdktrace.SpanExporter, error) {
