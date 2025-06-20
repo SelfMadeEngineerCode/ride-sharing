@@ -35,6 +35,12 @@ spec:
                 secretKeyRef:
                   name: external-apis
                   key: osrm
+
+            - name: JAEGER_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  key: JAEGER_ENDPOINT
+                  name: app-config
 ---
 apiVersion: v1
 kind: Service

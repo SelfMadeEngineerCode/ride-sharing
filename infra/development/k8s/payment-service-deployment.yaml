@@ -27,6 +27,11 @@ spec:
               memory: "128Mi"
               cpu: "200m"
           env:
+            - name: JAEGER_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  key: JAEGER_ENDPOINT
+                  name: app-config
             - name: STRIPE_SUCCESS_URL
               valueFrom:
                 configMapKeyRef:
