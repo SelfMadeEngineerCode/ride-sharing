@@ -25,6 +25,11 @@ spec:
               memory: "128Mi"
               cpu: "200m"
           env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: uri
             - name: RABBITMQ_URI
               valueFrom:
                 secretKeyRef:
