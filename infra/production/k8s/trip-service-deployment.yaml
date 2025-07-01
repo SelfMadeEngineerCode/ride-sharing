@@ -16,7 +16,7 @@ spec:
         - name: trip-service
           image: europe-west1-docker.pkg.dev/{{PROJECT_ID}}/ride-sharing/trip-service
           ports:
-            - containerPort: 8083
+            - containerPort: 9093
           resources:
             requests:
               memory: "64Mi"
@@ -24,7 +24,28 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "200m"
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: uri
+            - name: RABBITMQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-credentials
+                  key: uri
+            - name: OSRM_API
+              valueFrom:
+                secretKeyRef:
+                  name: external-apis
+                  key: osrm
 
+            - name: JAEGER_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  key: JAEGER_ENDPOINT
+                  name: app-config
 ---
 apiVersion: v1
 kind: Service
@@ -34,7 +55,7 @@ spec:
   selector:
     app: trip-service
   ports:
-    - port: 8083
-      name: http
-      targetPort: 8083
+    - port: 9093
+      name: grpc
+      targetPort: 9093
   type: ClusterIP

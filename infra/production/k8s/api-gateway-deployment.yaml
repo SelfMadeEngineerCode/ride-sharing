@@ -17,12 +17,6 @@ spec:
           image: europe-west1-docker.pkg.dev/{{PROJECT_ID}}/ride-sharing/api-gateway
           ports:
             - containerPort: 8081
-          env:
-            - name: GATEWAY_HTTP_ADDR
-              valueFrom:
-                configMapKeyRef:
-                  key: GATEWAY_HTTP_ADDR
-                  name: app-config
           resources:
             requests:
               memory: "128Mi"
@@ -30,6 +24,28 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "125m"
+          env:
+            # Accessing an env variable from the app-config config map
+            - name: GATEWAY_HTTP_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  key: GATEWAY_HTTP_ADDR
+                  name: app-config
+            - name: JAEGER_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  key: JAEGER_ENDPOINT
+                  name: app-config
+            - name: RABBITMQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-credentials
+                  key: uri
+            - name: STRIPE_WEBHOOK_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secrets
+                  key: stripe-webhook-key
 ---
 apiVersion: v1
 kind: Service
