@@ -1,6 +1,6 @@
 # "Microservices with Go" course project
 
-Get the starter code [here](https://github.com/selfmadeengineer/microservices-with-go-starter)!
+Get the starter code [here](https://github.com/SelfMadeEngineerCode/microservices-go-starter)!
 
 In this project‑driven course, you’ll build the backend microservices system for a Uber‑style ride‑sharing app from the ground up—using Go, Docker, and Kubernetes.
 
